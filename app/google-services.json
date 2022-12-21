@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "535001751389",
+    "project_id": "quizappadds",
+    "storage_bucket": "quizappadds.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:535001751389:android:7c2776007e90d0452e92b4",
+        "android_client_info": {
+          "package_name": "com.mszgajewski.javaquizandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "535001751389-jaic2c48b1gd1mqbt5k71cv8kn37s6pv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mszgajewski.javaquizandroid",
+            "certificate_hash": "f87d980cc5235128de33fc7f1f0593e8602cd38a"
+          }
+        },
+        {
+          "client_id": "535001751389-o3ic01pmi45d46uhb631a48pedns5g5o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAsIY93qsSGVtPcv4IOodQNj16mpS2FFI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "535001751389-o3ic01pmi45d46uhb631a48pedns5g5o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
