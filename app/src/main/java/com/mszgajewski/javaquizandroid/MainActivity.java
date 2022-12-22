@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -29,9 +32,12 @@ public class MainActivity extends AppCompatActivity {
     private final List<QuestionsList> questionsLists = new ArrayList<>();
 
     private TextView quizTimer;
+
     private RelativeLayout option1Layout, option2Layout, option3Layout, option4Layout;
     private TextView option1TextView, option2TextView, option3TextView, option4TextView;
     private ImageView option1Icon, option2Icon, option3Icon, option4Icon;
+
+    private TextView questionTextView;
 
     private TextView totalQuestionTextView;
     private TextView currentQuestion;
@@ -39,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
     private final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://quizappadds-default-rtdb.europe-west1.firebasedatabase.app/");
 
     private CountDownTimer countDownTimer;
+
+    private int currentQuestionPosition = 0;
+    private int selectedOption = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         option3Icon = findViewById(R.id.option3Icon);
         option4Icon = findViewById(R.id.option4Icon);
 
+        questionTextView = findViewById(R.id.questionTextView);
         totalQuestionTextView = findViewById(R.id.totalQuestionsTextView);
         currentQuestion = findViewById(R.id.currentQuestionTextView);
 
@@ -91,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 totalQuestionTextView.setText("/" + questionsLists.size());
+
+                startQuizTimer(getQuizTime);
+
+                selectQuestion(currentQuestionPosition);
             }
 
             @Override
@@ -98,6 +113,70 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Bład pobierania danych", Toast.LENGTH_SHORT).show();
             }
         });
+
+        option1Layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedOption = 1;
+                selectOption(option1Layout, option1Icon);
+            }
+        });
+
+        option2Layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedOption = 2;
+                selectOption(option2Layout, option2Icon);
+            }
+        });
+
+        option3Layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedOption = 3;
+                selectOption(option3Layout, option3Icon);
+            }
+        });
+
+        option4Layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedOption = 4;
+                selectOption(option4Layout, option4Icon);
+            }
+        });
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedOption != 0){
+                    questionsLists.get(currentQuestionPosition).setUserSelectedAnswer(selectedOption);
+                    selectedOption = 0;
+                    currentQuestionPosition++;
+
+                    if (currentQuestionPosition < questionsLists.size()){
+                        selectQuestion(currentQuestionPosition);
+                    } else {
+                        countDownTimer.cancel();
+                        finishQuiz();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Proszę wybrać odpowiedź", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void finishQuiz(){
+        Intent intent = new Intent(MainActivity.this,QuizResult.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("questions", (Serializable) questionsLists);
+
+        intent.putExtras(bundle);
+        startActivity(intent);
+
+        finish();
     }
 
     private void startQuizTimer(int maxTimeInSeconds) {
@@ -118,7 +197,43 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
 
+                finishQuiz();
             }
         };
+
+        countDownTimer.start();
+    }
+
+    private void selectQuestion(int questionListPosition){
+
+        resetOptions();
+
+        questionTextView.setText(questionsLists.get(questionListPosition).getQuestion());
+        option1TextView.setText(questionsLists.get(questionListPosition).getOption1());
+        option2TextView.setText(questionsLists.get(questionListPosition).getOption2());
+        option3TextView.setText(questionsLists.get(questionListPosition).getOption3());
+        option4TextView.setText(questionsLists.get(questionListPosition).getOption4());
+
+        currentQuestion.setText("Pytanie" + (questionListPosition + 1));
+    }
+
+    private void resetOptions(){
+
+        option1Layout.setBackgroundResource(R.drawable.round_back_white50_10);
+        option2Layout.setBackgroundResource(R.drawable.round_back_white50_10);
+        option3Layout.setBackgroundResource(R.drawable.round_back_white50_10);
+        option4Layout.setBackgroundResource(R.drawable.round_back_white50_10);
+
+        option1Icon.setImageResource(R.drawable.round_back_white50_100);
+        option2Icon.setImageResource(R.drawable.round_back_white50_100);
+        option3Icon.setImageResource(R.drawable.round_back_white50_100);
+        option4Icon.setImageResource(R.drawable.round_back_white50_100);
+    }
+
+    private void selectOption(RelativeLayout selectedOptionLayout, ImageView selectedOptionIcon){
+        resetOptions();
+
+        selectedOptionIcon.setImageResource(R.drawable.ic_check);
+        selectedOptionLayout.setBackgroundResource(R.drawable.round_back_selected_option);
     }
 }

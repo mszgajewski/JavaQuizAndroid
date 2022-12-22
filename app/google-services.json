@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "535001751389",
+    "firebase_url": "https://quizappadds-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "quizappadds",
     "storage_bucket": "quizappadds.appspot.com"
   },

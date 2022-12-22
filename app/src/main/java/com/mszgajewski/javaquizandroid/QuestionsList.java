@@ -1,6 +1,8 @@
 package com.mszgajewski.javaquizandroid;
 
-public class QuestionsList {
+import java.io.Serializable;
+
+public class QuestionsList implements Serializable  {
 
     private final String question, option1, option2, option3, option4;
     private final int answer;

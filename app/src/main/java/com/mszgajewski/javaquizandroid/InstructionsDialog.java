@@ -43,4 +43,4 @@ public class InstructionsDialog extends Dialog {
             instructionTextView.setText(instructionTextView.getText() + "\n\n" + instructionPoint);
         }
     }
-}  
+}
