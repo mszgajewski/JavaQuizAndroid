@@ -24,8 +24,7 @@ public class InstructionsDialog extends Dialog {
         final AppCompatButton continueBtn = findViewById(R.id.continueBtn);
         final TextView instructionsTextView = findViewById(R.id.instructionsTextView);
 
-        setInstructionPoint(instructionsTextView,"1. Masz 2 minuty na ukończenie testu");
-        setInstructionPoint(instructionsTextView,"2. Za każdą poprawną odpowiedź dostajesz 1 punkt");
+        setInstructionPoint(instructionsTextView,"1. Masz 2 minuty na ukończenie testu 2. Za każdą poprawną odpowiedź dostajesz 1 punkt ");
 
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,7 +39,7 @@ public class InstructionsDialog extends Dialog {
         if (instructionPoints == 0) {
             instructionTextView.setText(instructionPoint);
         } else {
-            instructionTextView.setText(instructionTextView.getText() + "\n\n" + instructionPoint);
+            instructionTextView.setText(instructionTextView.getText() + "/n/n" + instructionPoint);
         }
     }
 }
