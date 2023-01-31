@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mszgajewski.javaquizandroid.databinding.ActivityMainBinding;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,52 +30,20 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
+    ActivityMainBinding binding;
+
     private final List<QuestionsList> questionsLists = new ArrayList<>();
 
-    private TextView quizTimer;
-
-    private RelativeLayout option1Layout, option2Layout, option3Layout, option4Layout;
-    private TextView option1TextView, option2TextView, option3TextView, option4TextView;
-    private ImageView option1Icon, option2Icon, option3Icon, option4Icon;
-
-    private TextView questionTextView;
-
-    private TextView totalQuestionTextView;
-    private TextView currentQuestion;
-
     private final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://quizappadds-default-rtdb.europe-west1.firebasedatabase.app/");
-
     private CountDownTimer countDownTimer;
-
     private int currentQuestionPosition = 0;
     private int selectedOption = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        quizTimer = findViewById(R.id.quizTimer);
-
-        option1Layout = findViewById(R.id.option1Layout);
-        option2Layout = findViewById(R.id.option2Layout);
-        option3Layout = findViewById(R.id.option3Layout);
-        option4Layout = findViewById(R.id.option4Layout);
-
-        option1TextView = findViewById(R.id.option1TextView);
-        option2TextView = findViewById(R.id.option2TextView);
-        option3TextView = findViewById(R.id.option3TextView);
-        option4TextView = findViewById(R.id.option4TextView);
-
-        option1Icon = findViewById(R.id.option1Icon);
-        option2Icon = findViewById(R.id.option2Icon);
-        option3Icon = findViewById(R.id.option3Icon);
-        option4Icon = findViewById(R.id.option4Icon);
-
-        questionTextView = findViewById(R.id.questionTextView);
-        totalQuestionTextView = findViewById(R.id.totalQuestionsTextView);
-        currentQuestion = findViewById(R.id.currentQuestionTextView);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         final AppCompatButton nextBtn = findViewById(R.id.nextQuestionBtn);
 
@@ -101,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                     questionsLists.add(questionsList);
                 }
 
-                totalQuestionTextView.setText("/" + questionsLists.size());
+                binding.totalQuestionsTextView.setText("/" + questionsLists.size());
 
                 startQuizTimer(getQuizTime);
 
@@ -114,35 +83,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        option1Layout.setOnClickListener(new View.OnClickListener() {
+        binding.option1Layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectedOption = 1;
-                selectOption(option1Layout, option1Icon);
+                selectOption(binding.option1Layout, binding.option1Icon);
             }
         });
 
-        option2Layout.setOnClickListener(new View.OnClickListener() {
+        binding.option2Layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectedOption = 2;
-                selectOption(option2Layout, option2Icon);
+                selectOption(binding.option2Layout, binding.option2Icon);
             }
         });
 
-        option3Layout.setOnClickListener(new View.OnClickListener() {
+        binding.option3Layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectedOption = 3;
-                selectOption(option3Layout, option3Icon);
+                selectOption(binding.option3Layout, binding.option3Icon);
             }
         });
 
-        option4Layout.setOnClickListener(new View.OnClickListener() {
+        binding.option4Layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectedOption = 4;
-                selectOption(option4Layout, option4Icon);
+                selectOption(binding.option4Layout, binding.option4Icon);
             }
         });
 
@@ -191,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                         getMinute - TimeUnit.HOURS.toMinutes(getHour),
                         getSeconds - TimeUnit.MINUTES.toSeconds(getMinute));
 
-                quizTimer.setText(generateTime);
+                binding.quizTimer.setText(generateTime);
             }
 
             @Override
@@ -208,26 +177,26 @@ public class MainActivity extends AppCompatActivity {
 
         resetOptions();
 
-        questionTextView.setText(questionsLists.get(questionListPosition).getQuestion());
-        option1TextView.setText(questionsLists.get(questionListPosition).getOption1());
-        option2TextView.setText(questionsLists.get(questionListPosition).getOption2());
-        option3TextView.setText(questionsLists.get(questionListPosition).getOption3());
-        option4TextView.setText(questionsLists.get(questionListPosition).getOption4());
+        binding.questionTextView.setText(questionsLists.get(questionListPosition).getQuestion());
+        binding.option1TextView.setText(questionsLists.get(questionListPosition).getOption1());
+        binding.option2TextView.setText(questionsLists.get(questionListPosition).getOption2());
+        binding.option3TextView.setText(questionsLists.get(questionListPosition).getOption3());
+        binding.option4TextView.setText(questionsLists.get(questionListPosition).getOption4());
 
-        currentQuestion.setText("Pytanie" + (questionListPosition + 1));
+        binding.currentQuestionTextView.setText("Pytanie" + (questionListPosition + 1));
     }
 
     private void resetOptions(){
 
-        option1Layout.setBackgroundResource(R.drawable.round_back_white50_10);
-        option2Layout.setBackgroundResource(R.drawable.round_back_white50_10);
-        option3Layout.setBackgroundResource(R.drawable.round_back_white50_10);
-        option4Layout.setBackgroundResource(R.drawable.round_back_white50_10);
+        binding.option1Layout.setBackgroundResource(R.drawable.round_back_white50_10);
+        binding.option2Layout.setBackgroundResource(R.drawable.round_back_white50_10);
+        binding.option3Layout.setBackgroundResource(R.drawable.round_back_white50_10);
+        binding.option4Layout.setBackgroundResource(R.drawable.round_back_white50_10);
 
-        option1Icon.setImageResource(R.drawable.round_back_white50_100);
-        option2Icon.setImageResource(R.drawable.round_back_white50_100);
-        option3Icon.setImageResource(R.drawable.round_back_white50_100);
-        option4Icon.setImageResource(R.drawable.round_back_white50_100);
+        binding.option1Icon.setImageResource(R.drawable.round_back_white50_100);
+        binding.option2Icon.setImageResource(R.drawable.round_back_white50_100);
+        binding.option3Icon.setImageResource(R.drawable.round_back_white50_100);
+        binding.option4Icon.setImageResource(R.drawable.round_back_white50_100);
     }
 
     private void selectOption(RelativeLayout selectedOptionLayout, ImageView selectedOptionIcon){
