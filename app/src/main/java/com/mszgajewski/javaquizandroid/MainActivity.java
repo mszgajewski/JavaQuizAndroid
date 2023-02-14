@@ -156,7 +156,8 @@ public class MainActivity extends AppCompatActivity {
                 long getMinute  = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
                 long getSeconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished);
 
-                String generateTime = String.format(Locale.getDefault(),"%02d:%02d:%02d", getHour,
+                String generateTime = String.format(Locale.getDefault(),"%02d:%02d:%02d",
+                        getHour,
                         getMinute - TimeUnit.HOURS.toMinutes(getHour),
                         getSeconds - TimeUnit.MINUTES.toSeconds(getMinute));
 
