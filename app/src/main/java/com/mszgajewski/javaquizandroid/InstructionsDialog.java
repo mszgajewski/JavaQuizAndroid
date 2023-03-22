@@ -13,7 +13,6 @@ import com.mszgajewski.javaquizandroid.databinding.InstructionsDialogLayoutBindi
 public class InstructionsDialog extends Dialog {
 
     InstructionsDialogLayoutBinding binding;
-    private int instructionPoints = 0;
 
     public InstructionsDialog(@NonNull Context context) {
         super(context);
@@ -27,16 +26,12 @@ public class InstructionsDialog extends Dialog {
 
         setInstructionPoint(binding.instructionsTextView,"1. Masz 2 minuty na ukończenie testu 2. Za każdą poprawną odpowiedź dostajesz 1 punkt ");
 
-        binding.continueBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        binding.continueBtn.setOnClickListener(v -> dismiss());
     }
 
     private void setInstructionPoint(TextView instructionTextView, String instructionPoint){
 
+        int instructionPoints = 0;
         if (instructionPoints == 0) {
             instructionTextView.setText(instructionPoint);
         } else {
