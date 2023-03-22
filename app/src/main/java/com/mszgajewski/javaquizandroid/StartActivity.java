@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.View;
 
 import com.mszgajewski.javaquizandroid.databinding.ActivityStartBinding;
 
@@ -25,18 +24,8 @@ public class StartActivity extends AppCompatActivity {
         instructionsDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         instructionsDialog.show();
 
-        binding.startQuizBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(StartActivity.this,MainActivity.class));
-            }
-        });
+        binding.startQuizBtn.setOnClickListener(v -> startActivity(new Intent(StartActivity.this,MainActivity.class)));
 
-        binding.quitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        binding.quitBtn.setOnClickListener(v -> finish());
     }
 }
