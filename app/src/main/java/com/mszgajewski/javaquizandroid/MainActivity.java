@@ -2,17 +2,12 @@ package com.mszgajewski.javaquizandroid;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -31,9 +26,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-
     private final List<QuestionsList> questionsLists = new ArrayList<>();
-
     private final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://quizappadds-default-rtdb.europe-west1.firebasedatabase.app/");
     private CountDownTimer countDownTimer;
     private int currentQuestionPosition = 0;
@@ -44,13 +37,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        final AppCompatButton nextBtn = findViewById(R.id.nextQuestionBtn);
-
-        InstructionsDialog instructionsDialog = new InstructionsDialog(MainActivity.this);
-        instructionsDialog.setCancelable(false);
-        instructionsDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        instructionsDialog.show();
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -83,55 +69,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        binding.option1Layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedOption = 1;
-                selectOption(binding.option1Layout, binding.option1Icon);
-            }
+        binding.option1Layout.setOnClickListener(v -> {
+            selectedOption = 1;
+            selectOption(binding.option1Layout, binding.option1Icon);
         });
 
-        binding.option2Layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedOption = 2;
-                selectOption(binding.option2Layout, binding.option2Icon);
-            }
+        binding.option2Layout.setOnClickListener(v -> {
+            selectedOption = 2;
+            selectOption(binding.option2Layout, binding.option2Icon);
         });
 
-        binding.option3Layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedOption = 3;
-                selectOption(binding.option3Layout, binding.option3Icon);
-            }
+        binding.option3Layout.setOnClickListener(v -> {
+            selectedOption = 3;
+            selectOption(binding.option3Layout, binding.option3Icon);
         });
 
-        binding.option4Layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedOption = 4;
-                selectOption(binding.option4Layout, binding.option4Icon);
-            }
+        binding.option4Layout.setOnClickListener(v -> {
+            selectedOption = 4;
+            selectOption(binding.option4Layout, binding.option4Icon);
         });
 
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectedOption != 0){
-                    questionsLists.get(currentQuestionPosition).setUserSelectedAnswer(selectedOption);
-                    selectedOption = 0;
-                    currentQuestionPosition++;
+        binding.nextQuestionBtn.setOnClickListener(v -> {
+            if (selectedOption != 0){
+                questionsLists.get(currentQuestionPosition).setUserSelectedAnswer(selectedOption);
+                selectedOption = 0;
+                currentQuestionPosition++;
 
-                    if (currentQuestionPosition < questionsLists.size()){
-                        selectQuestion(currentQuestionPosition);
-                    } else {
-                        countDownTimer.cancel();
-                        finishQuiz();
-                    }
+                if (currentQuestionPosition < questionsLists.size()){
+                    selectQuestion(currentQuestionPosition);
                 } else {
-                    Toast.makeText(MainActivity.this, "Proszę wybrać odpowiedź", Toast.LENGTH_SHORT).show();
+                    countDownTimer.cancel();
+                    finishQuiz();
                 }
+            } else {
+                Toast.makeText(MainActivity.this, "Proszę wybrać odpowiedź", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -149,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startQuizTimer(int maxTimeInSeconds) {
-        countDownTimer = new CountDownTimer(maxTimeInSeconds * 1000, 1000) {
+        countDownTimer = new CountDownTimer(maxTimeInSeconds * 1000L, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 long getHour = TimeUnit.MILLISECONDS.toHours(millisUntilFinished);
