@@ -1,9 +1,11 @@
 package com.mszgajewski.javaquizandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+
 import com.mszgajewski.javaquizandroid.databinding.ActivityQuizResultBinding;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ public class QuizResult extends AppCompatActivity {
     ActivityQuizResultBinding binding;
     private  List<QuestionsList> questionsLists = new ArrayList<>();
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,24 +27,18 @@ public class QuizResult extends AppCompatActivity {
         binding.correctAnswerTextview.setText(getCorrectAnswers() + "");
         binding.incorrectAnswerTextview.setText(String.valueOf(questionsLists.size() - getCorrectAnswers()));
 
-        binding.shareResultBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "Mój wynik = " + binding.resultTextView.getText());
+        binding.shareResultBtn.setOnClickListener(v -> {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Mój wynik = " + binding.resultTextView.getText());
 
-                Intent shareIntent = Intent.createChooser(sendIntent,"Share Via");
-                startActivity(shareIntent);
-            }
+            Intent shareIntent = Intent.createChooser(sendIntent,"Udostępnij");
+            startActivity(shareIntent);
         });
 
-        binding.reTakeQuizBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(QuizResult.this, MainActivity.class));
-                finish();
-            }
+        binding.reTakeQuizBtn.setOnClickListener(v -> {
+            startActivity(new Intent(QuizResult.this, MainActivity.class));
+            finish();
         });
     }
 

@@ -3,6 +3,7 @@ package com.mszgajewski.javaquizandroid;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -21,8 +22,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+@SuppressLint("SetTextI18n")
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                final int getQuizTime = Integer.parseInt(snapshot.child("time").getValue(String.class));
+                final int getQuizTime = Integer.parseInt(Objects.requireNonNull(snapshot.child("time").getValue(String.class)));
 
                 for (DataSnapshot questions : snapshot.child("questions").getChildren()){
 
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     String getOption2 = questions.child("option2").getValue(String.class);
                     String getOption3 = questions.child("option3").getValue(String.class);
                     String getOption4 = questions.child("option4").getValue(String.class);
-                     int getAnswer = Integer.parseInt(questions.child("answer").getValue(String.class));
+                     int getAnswer = Integer.parseInt(Objects.requireNonNull(questions.child("answer").getValue(String.class)));
 
                     QuestionsList questionsList = new QuestionsList(getQuestion, getOption1, getOption2, getOption3, getOption4, getAnswer);
                     questionsLists.add(questionsList);
