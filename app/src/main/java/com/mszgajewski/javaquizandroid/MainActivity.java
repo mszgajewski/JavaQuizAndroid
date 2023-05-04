@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     String getOption2 = questions.child("option2").getValue(String.class);
                     String getOption3 = questions.child("option3").getValue(String.class);
                     String getOption4 = questions.child("option4").getValue(String.class);
-                     int getAnswer = Integer.parseInt(Objects.requireNonNull(questions.child("answer").getValue(String.class)));
+                    int getAnswer = Integer.parseInt(Objects.requireNonNull(questions.child("answer").getValue(String.class)));
 
                     QuestionsList questionsList = new QuestionsList(getQuestion, getOption1, getOption2, getOption3, getOption4, getAnswer);
                     questionsLists.add(questionsList);
