@@ -53,7 +53,6 @@ public class QuizResult extends AppCompatActivity {
                 correctAnswers++;
             }
         }
-
         return correctAnswers;
     }
 }
