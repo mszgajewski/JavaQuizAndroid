@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 final int getQuizTime = Integer.parseInt(Objects.requireNonNull(snapshot.child("time").getValue(String.class)));
 
                 for (DataSnapshot questions : snapshot.child("questions").getChildren()){
-
                     String getQuestion = questions.child("question").getValue(String.class);
                     String getOption1 = questions.child("option1").getValue(String.class);
                     String getOption2 = questions.child("option2").getValue(String.class);
@@ -58,14 +58,10 @@ public class MainActivity extends AppCompatActivity {
                     QuestionsList questionsList = new QuestionsList(getQuestion, getOption1, getOption2, getOption3, getOption4, getAnswer);
                     questionsLists.add(questionsList);
                 }
-
                 binding.totalQuestionsTextView.setText("/" + questionsLists.size());
-
                 startQuizTimer(getQuizTime);
-
                 selectQuestion(currentQuestionPosition);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(MainActivity.this, "Bład pobierania danych", Toast.LENGTH_SHORT).show();
@@ -111,14 +107,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void finishQuiz(){
-        Intent intent = new Intent(MainActivity.this,QuizResult.class);
 
+        Intent intent = new Intent(MainActivity.this,QuizResult.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("questions", (Serializable) questionsLists);
-
         intent.putExtras(bundle);
         startActivity(intent);
-
         finish();
     }
 
@@ -144,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
                 finishQuiz();
             }
         };
-
         countDownTimer.start();
     }
 
@@ -167,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
         binding.option2Layout.setBackgroundResource(R.drawable.round_back_white50_10);
         binding.option3Layout.setBackgroundResource(R.drawable.round_back_white50_10);
         binding.option4Layout.setBackgroundResource(R.drawable.round_back_white50_10);
-
         binding.option1Icon.setImageResource(R.drawable.round_back_white50_100);
         binding.option2Icon.setImageResource(R.drawable.round_back_white50_100);
         binding.option3Icon.setImageResource(R.drawable.round_back_white50_100);
@@ -175,8 +167,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectOption(RelativeLayout selectedOptionLayout, ImageView selectedOptionIcon){
-        resetOptions();
 
+        resetOptions();
         selectedOptionIcon.setImageResource(R.drawable.ic_check);
         selectedOptionLayout.setBackgroundResource(R.drawable.round_back_selected_option);
     }
